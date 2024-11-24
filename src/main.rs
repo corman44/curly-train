@@ -7,12 +7,11 @@
 use bsp::entry;
 use defmt::*;
 use defmt_rtt as _;
-use embedded_hal::digital::OutputPin;
 use panic_probe as _;
 
 // Provide an alias for our BSP so we can switch targets quickly.
 // Uncomment the BSP you included in Cargo.toml, the rest of the code does not need to change.
-use rp_pico as bsp;
+use rp_pico::{self as bsp, hal::gpio::{bank0::Gpio22, FunctionSio, Pin, PullUp, SioInput}};
 // use sparkfun_pro_micro_rp2040 as bsp;
 
 use bsp::hal::{
@@ -21,6 +20,10 @@ use bsp::hal::{
     sio::Sio,
     watchdog::Watchdog,
 };
+
+// My DHT11 Library
+// mod dht11;
+// use dht11::*;
 
 #[entry]
 fn main() -> ! {
@@ -53,16 +56,16 @@ fn main() -> ! {
         &mut pac.RESETS,
     );
 
+    let com_pin = pins.gpio22.into_pull_up_input();
     let mut led_pin = pins.gpio15.into_push_pull_output();
 
-    loop {
-        info!("on!");
-        led_pin.set_high().unwrap();
-        delay.delay_ms(1000);
-        info!("off!");
-        led_pin.set_low().unwrap();
-        delay.delay_ms(1000);
-    }
+
+    loop {}
+}
+
+
+// TODO still trying abtraction...
+fn start_com(pin: Pin<Gpio22,FunctionSio<SioInput>, PullUp>) {
 }
 
 // End of file
