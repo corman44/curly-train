@@ -3,36 +3,34 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "preLaunchTask": "rust: cargo build",
             "type": "probe-rs-debug",
             "request": "launch",
-            "name": "rp2040-project",
+            "name": "probe_rs Executable launch example",
             "cwd": "${workspaceFolder}",
-            "chip": "rp2040",
-            // RP2040 doesn't support connectUnderReset
-            "connectUnderReset": false,
-            "speed": 4000,
+            "speed": 24000,
+            "probe": "2e8a:000c:E6614104037C4F39",
             "runtimeExecutable": "probe-rs",
             "runtimeArgs": [
                 "dap-server"
             ],
+            "chip": "RP2040",
             "flashingConfig": {
                 "flashingEnabled": true,
-                "haltAfterReset": false
+                "haltAfterReset": false,
+                "formatOptions": {
+                    "binaryFormat": "elf"
+                }
             },
             "coreConfigs": [
                 {
                     "coreIndex": 0,
                     "programBinary": "target/thumbv6m-none-eabi/debug/rp2040-project-template",
-                    "rttEnabled": true
-                    // Uncomment this if you've downloaded the SVD from
-                    // https://github.com/raspberrypi/pico-sdk/raw/1.3.1/src/rp2040/hardware_regs/rp2040.svd
-                    // and placed it in the .vscode directory
-                    // "svdFile": "./.vscode/rp2040.svd",
                 }
             ],
-            "consoleLogLevel": "Info", //Error, Warn, Info, Debug, Trace
-            "wireProtocol": "Swd"
+            "env": {
+                "RUST_LOG": "info"
+            },
+            "consoleLogLevel": "Console"
         }
     ]
 }
